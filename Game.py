@@ -1,13 +1,14 @@
 from RulesManager import Rules
-from Deck import Deck
+from Decks import *
 from Player import Player
 
 
 class Game(object):
     # people: string list (names of players)
-    def __init__(self, people):
+    # deck: the deck object
+    def __init__(self, people, deck):
         self.ruleManager = Rules()
-        self.deck = Deck(self)
+        self.deck = deck
         self.players = []
         self.goals = []
         self.winner = None
@@ -24,7 +25,7 @@ class Game(object):
 
     # player: Player (whose turn it is); process a player's turn
     def turn(self, player):
-        print player
+        print (player)
         # draw correct number of cards, add them to hand
         drawn = self.ruleManager.draws
         for c in self.deck.deal(drawn):

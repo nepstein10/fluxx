@@ -15,14 +15,14 @@ class Player(object):
             iterable = self.hand
         else:
             iterable = self.keepers
-        print iterable
+        print (iterable)
         high = len(iterable)
         sel = self.get_int(high)
         return iterable.pop(sel - 1)
 
     # Card; li (either "h" or "k") discard prompt
     def discard(self, li):
-        print "{}, the select a card to discard.".format(self.name)
+        print (f"{self.name}, the select a card to discard.")
         return self.choose_card(li)
 
     # Boolean; wc: int list (the keepers needed to win)
@@ -49,10 +49,10 @@ class Player(object):
         try:
             sel = int(sel)
         except ValueError:
-            print "Oops, couldn't read that as a number"
+            print ("Oops, couldn't read that as a number")
             sel = self.get_int(high)
         while sel < 1 or sel > high:
-            print "Entry out of range"
+            print ("Entry out of range")
             sel = self.get_int(high)
         return sel
 
@@ -62,4 +62,4 @@ class Player(object):
 
     # to_string
     def __repr__(self):
-        return "{} (Player {})".format(self.name, self.ID - 9)
+        return "{self.name} (Player {self.ID-9})"

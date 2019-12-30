@@ -4,6 +4,26 @@ from random import shuffle
 class Deck(object):
     # g: Game
     def __init__(self, g):
+        self.pile = []
+        self.discard = []
+
+    # randomize the order of the cards in the deck (maybe factor this out)
+    def shuffle(self):
+        shuffle(self.pile)
+
+    # Card list; cards: int (number of cards to deal)
+    def deal(self, cards):
+        dealt = []
+        for i in range(cards):
+            if len(self.pile) == 0:
+                self.pile = self.discard
+                self.shuffle()
+            dealt.append(self.pile.pop(0))
+        return dealt
+
+
+class SampleFluxxDeck(Deck):
+    def __init__(self, g):
         # list of actions -- maybe try to put this in a different file
         actions = [lambda g: None]
         # list of cards -- also relocate to clean if possible
@@ -20,24 +40,10 @@ class Deck(object):
                  Keeper("Milk", g, 2),
                  Keeper("The Sun", g, 3),
                  Keeper("The Moon", g, 4),
-                 Goal("Milk and Cookies", g, [[1,2]]),
-                 Goal("Chocolate Milk", g, [[0,2]]),
-                 Goal("Squishy Chocolate", g, [[0,3]]),
-                 Goal("Night and Day", g, [[3,4]])]
+                 Goal("Milk and Cookies", g, [[1, 2]]),
+                 Goal("Chocolate Milk", g, [[0, 2]]),
+                 Goal("Squishy Chocolate", g, [[0, 3]]),
+                 Goal("Night and Day", g, [[3, 4]])]
         # set the pile to the cards, create an empty discard pile
         self.pile = cards
         self.discard = []
-
-    # randomize the order of the cards in the deck (maybe factor this out)
-    def shuffle(self):
-        shuffle(self.pile)
-
-    # Card list; cards: int (number of cards to deal)
-    def deal(self, cards):
-        dealt = []
-        for i in range(cards):
-            if len(self.pile) == 0:
-                self.pile = self.discard
-                self.shuffle()
-            dealt.append(self.pile.pop(0))
-        return dealt

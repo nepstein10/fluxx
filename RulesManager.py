@@ -23,7 +23,7 @@ class Rules(object):
             # update any rules that need updating
             if not rules[r] is None:
                 options[r] = rules[r]
-                print "rule {} updated".format(r)
+                print ("rule {r} updated")
         self.draws = options[0]
         self.plays = options[1]
         self.handlim = options[2]
