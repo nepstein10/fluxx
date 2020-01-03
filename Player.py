@@ -1,5 +1,7 @@
+from time import sleep
+
 class Player(object):
-    # g: Game, pID: int (10 is player 1 for now, but in players[0] of g
+    # g: Game, name: string, pID: int (10 is player 1 for now, but in players[0] of g
     def __init__(self, g, name, pID):
         self.game = g
         self.name = name
@@ -9,16 +11,15 @@ class Player(object):
         self.keepers = []
 
     # Card; li (either "h" or "k") prompt user to pick one of their cards to pop and return
-    def choose_card(self, li):
-        iterable = None
-        if li is "h":
-            iterable = self.hand
-        else:
-            iterable = self.keepers
+    def choose_card(self, lt, st):
+        iterable = self.hand if lt is "h" else iterable = self.keepers
         print (iterable)
-        high = len(iterable)
-        sel = self.get_int(high)
-        return iterable.pop(sel - 1)
+        self.game.view.pick_card(iterable, st)
+        # wait for the card to be picked, making it the last card and None the second to last
+        while len(iterable) < 2 or not iterable[-2] is None:
+            sleep(.1)
+        iterable.remove(None)
+        return iterable.pop(-1)
 
     # Card; li (either "h" or "k") discard prompt
     def discard(self, li):
@@ -43,18 +44,18 @@ class Player(object):
             while len(self.keepers) > kl:
                 self.discard("k")
 
-    # get an int input
-    def get_int(self, high):
-        sel = raw_input("Please type a number from 1-{}: ".format(high))
-        try:
-            sel = int(sel)
-        except ValueError:
-            print ("Oops, couldn't read that as a number")
-            sel = self.get_int(high)
-        while sel < 1 or sel > high:
-            print ("Entry out of range")
-            sel = self.get_int(high)
-        return sel
+    # # get an int input
+    # def get_int(self, high):
+    #     sel = raw_input("Please type a number from 1-{}: ".format(high))
+    #     try:
+    #         sel = int(sel)
+    #     except ValueError:
+    #         print ("Oops, couldn't read that as a number")
+    #         sel = self.get_int(high)
+    #     while sel < 1 or sel > high:
+    #         print ("Entry out of range")
+    #         sel = self.get_int(high)
+    #     return sel
 
     # do all the end-turn things like complying with limits, taking another
     def end_turn(self):
@@ -62,4 +63,4 @@ class Player(object):
 
     # to_string
     def __repr__(self):
-        return "{self.name} (Player {self.ID-9})"
+        return self.name

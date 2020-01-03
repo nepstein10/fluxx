@@ -1,8 +1,6 @@
-from Game import Game
-from random import shuffle
+from Game import *
 from View import View
-import Decks
-from abc import abstractmethod
+from Decks import *
 
 
 # play the game
@@ -29,7 +27,7 @@ def main():
 class GM(object):
     def __init__(self):
         # NEED TO UPDATE THIS WITH ALL GAME OPTIONS
-        game_opts = [FluxxSample(), Fluxx3_1()]
+        game_opts = [FluxxSample(SampleFluxxDeck()), Fluxx3_1(Deck())]
         self.v = View(self, game_opts)
         self.game_select(self.v)
 
@@ -38,39 +36,6 @@ class GM(object):
         print ("Welcome to Fluxx!")
         view.game_select()
 
-
-class Fluxx(object):
-    def __init__(self):
-        self.minPlayers = 2
-        self.maxPlayers = 6
-
-    @abstractmethod
-    def start(self, players):
-        pass
-
-class Fluxx3_1(Fluxx):
-    def __init__(self):
-        super().__init__()
-        self.maxPlayers = 5
-
-    def start(self, players):
-        d = Decks.Deck()
-        g = Game(players, d)
-
-    def __repr__(self):
-        return "Fluxx 3.1"
-
-class FluxxSample(Fluxx):
-    def __init__(self):
-        super().__init__()
-        self.minPlayers = 1
-
-    def start(self, players):
-        d = Decks.SampleFluxxDeck()
-        g = Game(players, d)
-
-    def __repr__(self):
-        return "Fluxx Sample"
 
 
 if __name__ == '__main__':

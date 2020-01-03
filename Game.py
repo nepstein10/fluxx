@@ -1,20 +1,38 @@
 from RulesManager import Rules
-from Decks import *
 from Player import Player
+import Decks
 
+from abc import abstractmethod
+import random
 
 class Game(object):
-    # people: string list (names of players)
     # deck: the deck object
-    def __init__(self, people, deck):
+    def __init__(self, deck):
         self.ruleManager = Rules()
         self.deck = deck
+        self.view = None
         self.players = []
         self.goals = []
         self.winner = None
+
+
+class Fluxx(Game):
+    def __init__(self, deck):
+        self.minPlayers = 2
+        self.maxPlayers = 6
+        super().__init__(deck)
+
+    @abstractmethod
+    def start(self, players, view):
+        self.view = view
         # generate players, pIDs starting at 10
-        for i in range(len(people)):
-            self.players.append(Player(self, people[i], i + 10))
+        for i in range(len(players)):
+            self.players.append(Player(self, players[i], i + 10))
+        random.shuffle(self.players)
+        print(self.players)
+        self.setup()
+        self.view.game_board(self.players, [], Rules())
+
 
     # shuffle the deck and deal the starting 3 to each player
     def setup(self):
@@ -58,3 +76,31 @@ class Game(object):
                         self.winner = p
             #             return True
             # return False
+
+class Fluxx3_1(Fluxx):
+    def __init__(self, deck):
+        super().__init__(deck)
+        self.maxPlayers = 5
+
+    def start(self, players, view):
+        super().start(players, view)
+        d = Decks.Deck()
+        print("starting 3.1")
+        print(self)
+
+    def __repr__(self):
+        return "Fluxx 3.1"
+
+class FluxxSample(Fluxx):
+    def __init__(self, deck):
+        super().__init__(deck)
+        self.maxPlayers = 4
+
+    def start(self, players, view):
+        super().start(players, view)
+        d = Decks.SampleFluxxDeck()
+        print ("Starting SampleFluxx")
+        print(self)
+
+    def __repr__(self):
+        return "Fluxx Sample"
