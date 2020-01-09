@@ -10,14 +10,16 @@ class Player(object):
         self.hand = []
         self.keepers = []
 
-    # Card; li (either "h" or "k") prompt user to pick one of their cards to pop and return
+    #   lt (either "h" or "k")
+    #   st (string): prompt user to pick one of their cards to pop and return
     def choose_card(self, lt, st):
-        iterable = self.hand if lt is "h" else iterable = self.keepers
+        iterable = self.hand if lt is "h" else self.keepers
         print (iterable)
         self.game.view.pick_card(iterable, st)
         # wait for the card to be picked, making it the last card and None the second to last
         while len(iterable) < 2 or not iterable[-2] is None:
             sleep(.1)
+        print("loop done")
         iterable.remove(None)
         return iterable.pop(-1)
 
@@ -60,6 +62,7 @@ class Player(object):
     # do all the end-turn things like complying with limits, taking another
     def end_turn(self):
         self.lims_comply()
+
 
     # to_string
     def __repr__(self):

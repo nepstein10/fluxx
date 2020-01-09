@@ -72,7 +72,9 @@ class View(object):
     def game_board(self, players, goals, rm):
         # The player frame, with an inner frame for each player
         #  displaying name, hand size, and keepers
+        print("starting board")
         self.clear_frame(self.frame)
+        self.frame.master.geometry(f"{len(players)*200}x200")
         pframe = ttk.Frame(self.frame, padding="3 3 12 12")
         pframe.grid(column=0, row=0, sticky=N)
         for i in range(len(players)):
@@ -92,16 +94,23 @@ class View(object):
         # The rules frame, with a representation of each rule card
         rframe = ttk.Frame(self.frame, padding="3 3 12 12")
         rframe.grid(column=0, row=1)
+        rlabel = ttk.Label(rframe, text="Rules:")
+        rlabel.grid(column=0, row=0, sticky=W)
+        brules = ttk.Label(rframe, text="D1/P1")
+        brules.grid(column=0, row=1, sticky=W)
         for i in range(len(rm.rules)):
             rlbl = ttk.Label(rframe, text=rm.rules[i])
-            rlbl.grid(column=i,row=0)
+            rlbl.grid(column=i+1,row=0)
+        print("done with board")
 
     # Select a card from the list passed in and return it
     #   li: a list of Card objects to pick from
     #   st: a string to give instructions (label)
+    #   TODO:::fn: the function to continue with
     # Feeds to ret_card
     #   Will popping the card remove it from the list successfully?
     def pick_card(self, li, st):
+        print("starting pick_card")
         if not len(li):
             raise IndexError
         window = Tk()
@@ -112,11 +121,17 @@ class View(object):
         lbl.grid(column=0, row=0, columnspan=len(li))
         for i in range(len(li)):
             b = ttk.Button(fr, text=li[i], command=lambda i=i: self.ret_card(i, li, window))
+            b.grid(column=i, row=1)
+        window.geometry(f"{len(li)*150}x50+300+250")
+        window.mainloop()
+        print("done pick_card")
 
     # pop the Card from the list, append None and the Card
     #   This allows the code to look for the trigger of the None
     #   Extremely clunky AND I DON'T LIKE IT
+    #   See the functional programming idea from MILOOOOOOOOO
     def ret_card(self, i, li, window):
+        print(f"chose {li[i]}")
         window.destroy()
         temp = li.pop(i)
         li += [None,temp]

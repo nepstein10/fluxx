@@ -6,7 +6,7 @@ class Rules(object):
     #     self.keeplim = r[3]
 
     def __init__(self):
-        self.rules = []
+        self.rules = [] # a list of the NRule objects in play
         self.draws = 1
         self.plays = 1
         self.handlim = None
@@ -40,7 +40,10 @@ class Rules(object):
         self.update_rules(r.rules)
 
 
-    # int (number now drawn); make all players comply w/ hand/keep lims, new draws
+    # g: Game
+    # p: Player (the active player)
+    # d: int (number already drawn)
+    # make all players comply w/ hand/keep lims, new draws
     def check_compliance(self, g, p, d):
         # make sure player drew enough cards if new rule adds draws
         if d < self.draws:
