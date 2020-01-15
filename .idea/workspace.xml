@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f276757a-51fc-461a-a404-83911136c76d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Card.py" afterPath="$PROJECT_DIR$/Card.py" />
-      <change beforePath="$PROJECT_DIR$/Decks.py" afterPath="$PROJECT_DIR$/Decks.py" />
-      <change beforePath="$PROJECT_DIR$/Game.py" afterPath="$PROJECT_DIR$/Game.py" />
-      <change beforePath="$PROJECT_DIR$/GameManager.py" afterPath="$PROJECT_DIR$/GameManager.py" />
-      <change beforePath="$PROJECT_DIR$/Player.py" afterPath="$PROJECT_DIR$/Player.py" />
-      <change beforePath="$PROJECT_DIR$/RulesManager.py" afterPath="$PROJECT_DIR$/RulesManager.py" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/View.py" afterPath="$PROJECT_DIR$/View.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.16106606">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="Decks.py" pinned="false" current-in-tab="true">
@@ -81,11 +76,11 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="View.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="View.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/View.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-421">
-                  <caret line="39" column="24" lean-forward="true" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+                <state relative-caret-position="1815">
+                  <caret line="121" column="8" lean-forward="false" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
                   <folding>
                     <element signature="e#0#21#0" expanded="true" />
                   </folding>
@@ -93,7 +88,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Player.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Player.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Player.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="226">
@@ -129,20 +124,20 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/View.py" />
         <option value="$PROJECT_DIR$/GameManager.py" />
         <option value="$PROJECT_DIR$/Card.py" />
         <option value="$PROJECT_DIR$/RulesManager.py" />
         <option value="$PROJECT_DIR$/Player.py" />
         <option value="$PROJECT_DIR$/Game.py" />
         <option value="$PROJECT_DIR$/Decks.py" />
+        <option value="$PROJECT_DIR$/View.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="72" />
+    <option name="x" value="559" />
     <option name="y" value="23" />
-    <option name="width" value="1346" />
+    <option name="width" value="859" />
     <option name="height" value="783" />
   </component>
   <component name="ProjectView">
@@ -247,10 +242,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="72" y="23" width="1346" height="783" extended-state="0" />
+    <frame x="559" y="23" width="859" height="783" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12778603" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32911393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -561,16 +556,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/View.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-421">
-          <caret line="39" column="24" lean-forward="true" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RulesManager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -605,6 +590,16 @@
           <caret line="17" column="42" lean-forward="false" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/View.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1815">
+          <caret line="121" column="8" lean-forward="false" selection-start-line="121" selection-start-column="8" selection-end-line="121" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -72,14 +72,18 @@ class View(object):
     # The board during game play
     #   g: Game
     def game_board(self, g):
-        # The player frame, with an inner frame for each player
-        #  displaying name, hand size, and keepers
         self.clear_frame(self.frame)
         self.frame.master.geometry(f"{len(g.players)*200}x200")
-        pframe = ttk.Frame(self.frame, padding="3 3 12 12")
+        bs = ttk.Style()
+        bs.configure('Bordered.TFrame', background="black")
+        # The player frame, with an inner frame for each player
+        #  displaying name, hand size, and keepers
+        pframe = ttk.Frame(self.frame, padding="3 12")
         pframe.grid(column=0, row=0, sticky=N)
         for i in range(len(g.players)):
-            iframe = ttk.Frame(pframe, padding="3 3 3 3")
+            iframe = ttk.Frame(pframe, padding=3,
+                               borderwidth=1, relief="sunken",
+                               style='Bordered.TFrame')
             iframe.grid(column=i, row=0)
             p = g.players[i]
             # label of the player's name
@@ -93,7 +97,9 @@ class View(object):
                 klbl = ttk.Label(iframe, text=p.keepers[j])
                 klbl.grid(column=j+1, row=1)
         # The rules frame, with a representation of each rule card
-        rframe = ttk.Frame(self.frame, padding="3 3 12 12")
+        rframe = ttk.Frame(self.frame, padding="3 12",
+                           borderwidth=1, relief="sunken",
+                           style='Bordered.TFrame')
         rframe.grid(column=0, row=1)
         rlabel = ttk.Label(rframe, text="Rules:")
         rlabel.grid(column=0, row=0, sticky=W)
@@ -103,7 +109,9 @@ class View(object):
             rlbl = ttk.Label(rframe, text=g.ruleManager.rules[i])
             rlbl.grid(column=i+1,row=1)
         # The goal(s), below the rules on the left
-        gframe = ttk.Frame(self.frame, padding="3 3 12 12")
+        gframe = ttk.Frame(self.frame, padding="3 12",
+                           borderwidth=1, relief="sunken",
+                           style='Bordered.TFrame')
         gframe.grid(column=0, row=2)
         glabel = ttk.Label(gframe, text="Goal(s):")
         glabel.grid(column=0, row=0, sticky=W)
