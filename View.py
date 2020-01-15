@@ -4,10 +4,8 @@ from tkinter import ttk
 
 
 class View(object):
-    # gm: GameManager
     # gs: Game[]
-    def __init__(self, gm, gs):
-        self.gm = gm
+    def __init__(self, gs):
         self.gs = gs
         self.game = None
 
@@ -19,9 +17,16 @@ class View(object):
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
 
+        self.notifytext = "This is Fluxx in progress!"
+
     # These next 4 methods are the sequence of views that start the game.
     #   Maybe the data should be factored out of here and through the manager?
     def game_select(self):
+        self.new_game()
+        self.root.mainloop()
+
+    def new_game(self):
+        self.clear_frame(self.frame)
         # generate and grid the buttons
         for i in range(len(self.gs)):
             game = self.gs[i]
@@ -30,7 +35,6 @@ class View(object):
         # generate and grid the label
         ltitle = ttk.Label(self.frame, text="Please pick a game to play!")
         ltitle.grid(column=0, row=0, columnspan=len(self.gs))
-        self.root.mainloop()
 
     def get_player_num(self, game):
         self.game = game
@@ -66,21 +70,18 @@ class View(object):
         self.game.start(players, self)
 
     # The board during game play
-    #   players: a list of Player items
-    #   goals: a list of Goal cards that are active
-    #   rm: the Game's Rules object
-    def game_board(self, players, goals, rm):
+    #   g: Game
+    def game_board(self, g):
         # The player frame, with an inner frame for each player
         #  displaying name, hand size, and keepers
-        print("starting board")
         self.clear_frame(self.frame)
-        self.frame.master.geometry(f"{len(players)*200}x200")
+        self.frame.master.geometry(f"{len(g.players)*200}x200")
         pframe = ttk.Frame(self.frame, padding="3 3 12 12")
         pframe.grid(column=0, row=0, sticky=N)
-        for i in range(len(players)):
+        for i in range(len(g.players)):
             iframe = ttk.Frame(pframe, padding="3 3 3 3")
             iframe.grid(column=i, row=0)
-            p = players[i]
+            p = g.players[i]
             # label of the player's name
             ilbl = ttk.Label(iframe, text=p.name)
             ilbl.grid(row=0, columnspan=len(p.keepers)+1)
@@ -98,18 +99,31 @@ class View(object):
         rlabel.grid(column=0, row=0, sticky=W)
         brules = ttk.Label(rframe, text="D1/P1")
         brules.grid(column=0, row=1, sticky=W)
-        for i in range(len(rm.rules)):
-            rlbl = ttk.Label(rframe, text=rm.rules[i])
-            rlbl.grid(column=i+1,row=0)
-        print("done with board")
+        for i in range(len(g.ruleManager.rules)):
+            rlbl = ttk.Label(rframe, text=g.ruleManager.rules[i])
+            rlbl.grid(column=i+1,row=1)
+        # The goal(s), below the rules on the left
+        gframe = ttk.Frame(self.frame, padding="3 3 12 12")
+        gframe.grid(column=0, row=2)
+        glabel = ttk.Label(gframe, text="Goal(s):")
+        glabel.grid(column=0, row=0, sticky=W)
+        for i in range(len(g.goals)):
+            glbl = ttk.Label(gframe, text=g.goals[i])
+            glbl.grid(column=i+1, row=0)
+        notify = ttk.Label(self.frame, text=self.notifytext)
+        notify.grid(column=0, row=10, columnspan=3)
+        if g.winner:
+            ngb = ttk.Button(self.frame, text="New Game?", command=self.new_game)
+            ngb.grid(column=4, row=10)
 
     # Select a card from the list passed in and return it
     #   li: a list of Card objects to pick from
     #   st: a string to give instructions (label)
-    #   TODO:::fn: the function to continue with
+    #   fn: the function to continue with
+    #   p: the Player who's choosing a card
     # Feeds to ret_card
     #   Will popping the card remove it from the list successfully?
-    def pick_card(self, li, st):
+    def pick_card(self, p, li, st, fn):
         print("starting pick_card")
         if not len(li):
             raise IndexError
@@ -117,24 +131,26 @@ class View(object):
         window.title(st)
         fr = ttk.Frame(window, padding="3 3 12 12")
         fr.grid(column=0, row=0, sticky=NSEW)
-        lbl = ttk.Label(fr, text=st)
+        lbl = ttk.Label(fr, text=f"{p}, {st}")
         lbl.grid(column=0, row=0, columnspan=len(li))
         for i in range(len(li)):
-            b = ttk.Button(fr, text=li[i], command=lambda i=i: self.ret_card(i, li, window))
+            b = ttk.Button(fr, text=li[i], command=lambda i=i: self.ret_card(p, li.pop(i), window, fn))
             b.grid(column=i, row=1)
         window.geometry(f"{len(li)*150}x50+300+250")
         window.mainloop()
         print("done pick_card")
 
-    # pop the Card from the list, append None and the Card
-    #   This allows the code to look for the trigger of the None
-    #   Extremely clunky AND I DON'T LIKE IT
-    #   See the functional programming idea from MILOOOOOOOOO
-    def ret_card(self, i, li, window):
-        print(f"chose {li[i]}")
+    # Close the window and pass the card to fn
+    #   p (Player): the Player choosing the card
+    #   c (Card): the card chosen
+    #   window (Tk): the chose card window to close
+    #   fn (function): the function to pass the card to
+    def ret_card(self, p, c, window, fn):
+        print(f"chose {c}")
         window.destroy()
-        temp = li.pop(i)
-        li += [None,temp]
+        # call the function to pass the card to. current fn(s):
+        #   Game.run_play
+        fn(p, c)
 
     def clear_frame(self, frame):
         for c in frame.winfo_children():

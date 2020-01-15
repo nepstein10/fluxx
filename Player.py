@@ -1,4 +1,5 @@
 from time import sleep
+from Card import Keeper
 
 class Player(object):
     # g: Game, name: string, pID: int (10 is player 1 for now, but in players[0] of g
@@ -11,40 +12,50 @@ class Player(object):
         self.keepers = []
 
     #   lt (either "h" or "k")
-    #   st (string): prompt user to pick one of their cards to pop and return
-    def choose_card(self, lt, st):
+    #   st (string): prompt user to pick one of their cards
+    #   fun (function): the function to pass the card to from the button
+    #   FUTURE: MIGHT WANT TO INCLUDE AN ARG OF A LIST OF STUFF TO PASS THROUGH TO FUN
+    def choose_card(self, lt, st, fun):
         iterable = self.hand if lt is "h" else self.keepers
         print (iterable)
-        self.game.view.pick_card(iterable, st)
-        # wait for the card to be picked, making it the last card and None the second to last
-        while len(iterable) < 2 or not iterable[-2] is None:
-            sleep(.1)
-        print("loop done")
-        iterable.remove(None)
-        return iterable.pop(-1)
+        self.game.view.pick_card(self, iterable, st, fun)
+
 
     # Card; li (either "h" or "k") discard prompt
-    def discard(self, li):
-        print (f"{self.name}, the select a card to discard.")
-        return self.choose_card(li)
+    def discard(self, stli):
+        print (f"{self.name}, select a card to discard.")
+        st = "card from your hand" if stli == "h" else "keeper"
+        self.choose_card(stli, f"select a {st} to discard", self.manage_discard)
+
+    def manage_discard(self, _p, card):
+        self.game.deck.discard.append(card)
+        self.lims_comply()
+
 
     # Boolean; wc: int list (the keepers needed to win)
     def compwin(self, wc):
-        for k in wc:
-            if not k in self.keepers:
+        for kid in wc:
+            if not kid in map(self.get_kID, self.keepers):
+                print(kid)
                 return False
         return True
+
+    # k (Keeper)
+    def get_kID(self, k):
+        print(f"getting kID for {k}")
+        return k.kID
 
     # discard down to hand and keeper limits
     def lims_comply(self):
         hl = self.game.ruleManager.handlim
         kl = self.game.ruleManager.keeplim
-        if hl:
-            while len(self.hand) > hl:
-                self.discard("h")
-        if kl:
-            while len(self.keepers) > kl:
-                self.discard("k")
+        if hl and len(self.hand) > hl:
+            self.discard("h")
+        elif kl and len(self.keepers) > kl:
+            self.discard("k")
+        else:
+            self.game.ruleManager.check_compliance()
+
 
     # # get an int input
     # def get_int(self, high):

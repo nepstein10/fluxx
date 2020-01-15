@@ -19,7 +19,7 @@ class NRule(Card):
     # update the game rules with card-specific rules
     def on_play(self, player, g):
         super().on_play(player, g)
-        #self.game.ruleManager.add_rule(self)
+        g.ruleManager.add_rule(self)
 
 class Action(Card):
     # name: string, game: Game, action: function (from actions list in Deck)
@@ -31,7 +31,7 @@ class Action(Card):
     def on_play(self, player, g):
         super().on_play(player, g)
         self.action()
-        #self.game.deck.discard.append(self)
+        g.deck.discard.append(self)
 
 
 class Keeper(Card):
@@ -44,6 +44,7 @@ class Keeper(Card):
     def on_play(self, player, g):
         super().on_play(player, g)
         player.keepers.append(self)
+
 
 class Goal(Card):
     #special cases (5 keepers, 10 CiH) not built in yet, and not compatible

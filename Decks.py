@@ -15,8 +15,10 @@ class Deck(object):
     def deal(self, cards):
         dealt = []
         for i in range(cards):
-            if len(self.pile) == 0:
-                self.pile = self.discard
+            # Nothing to draw -> reshuffle
+            if not len(self.pile):
+                map(self.pile.append, self.discard)
+                self.discard = []
                 self.shuffle()
             dealt.append(self.pile.pop(0))
         return dealt
@@ -26,7 +28,7 @@ class SampleFluxxDeck(Deck):
     def __init__(self):
         super().__init__()
         # list of actions -- maybe try to put this in a different file
-        actions = [lambda g: None]
+        actions = [lambda: print("RR not implemented")]
         # list of cards -- also relocate to clean if possible
         cards = [NRule("Draw 2", [2, None, None, None]),
                  NRule("Draw 3", [3, None, None, None]),
@@ -34,7 +36,7 @@ class SampleFluxxDeck(Deck):
                  NRule("Play 3", [None, 3, None, None]),
                  NRule("Play 4", [None, 4, None, None]),
                  NRule("Hand Limit 1", [None, None, 1, None]),
-                 NRule("Keeper Limit 3", [None, None, None, 3]),
+                 NRule("Keeper Limit 2", [None, None, None, 2]),
                  Action("Rules Reset", actions[0]),
                  Keeper("Chocolate", 0),
                  Keeper("Cookies", 1),

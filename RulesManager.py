@@ -5,13 +5,17 @@ class Rules(object):
     #     self.handlim = r[2]
     #     self.keeplim = r[3]
 
-    def __init__(self):
+    def __init__(self, g):
+        self.game = g
         self.rules = [] # a list of the NRule objects in play
         self.draws = 1
         self.plays = 1
         self.handlim = None
         self.keeplim = None
         self.double_ag = None
+        # for check_compliance:
+        self.ops = None
+        self.ap = None
 
     def get_plays(self):
         return self.plays
@@ -36,22 +40,27 @@ class Rules(object):
                 for c in self.rules:
                     if c.rules[rule]:
                         self.rules.remove(c)
+                        self.game.deck.discard.append(c)
+                        break
         self.rules.append(r)
         self.update_rules(r.rules)
-
 
     # g: Game
     # p: Player (the active player)
     # d: int (number already drawn)
-    # make all players comply w/ hand/keep lims, new draws
-    def check_compliance(self, g, p, d):
+    def draw_up(self, p, d):
         # make sure player drew enough cards if new rule adds draws
         if d < self.draws:
             # draw cards one at a time
-            for c in g.deck.deal(self.draws - d):
+            for c in self.game.deck.deal(self.draws - d):
                 p.hand.append(c)
+            self.game.dtt = self.draws
+
+    # ops: a list of the other players
+    # make all players comply w/ hand/keep lims, new draws
+    def check_compliance(self):
         # comply other players with hand and keeper limits
-        for player in g.players:
-            if not p is player:
-                player.lims_comply()
-        return self.draws
+        if len(self.ops):
+            self.ops.pop(0).lims_comply()
+        else:
+            self.game.cont_play(self.ap)
