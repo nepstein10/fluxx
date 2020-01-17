@@ -1,7 +1,12 @@
+from PIL import ImageTk, Image
+from pathlib import Path
+
 class Card(object):
     # name: string
     def __init__(self, name):
         self.name = name
+        path = str(Path(__file__).parent.absolute())
+        self.img = ImageTk.PhotoImage(Image.open(f"{path}/cimgs/{self.name}.jpg").resize((70, 60)))
 
     def on_play(self, player, g):
         print (f"Played {self.name}")

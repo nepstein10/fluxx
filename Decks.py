@@ -17,7 +17,9 @@ class Deck(object):
         for i in range(cards):
             # Nothing to draw -> reshuffle
             if not len(self.pile):
-                map(self.pile.append, self.discard)
+                print("reshuffling discard")
+                print(self.discard)
+                list(map(self.pile.append, self.discard))
                 self.discard = []
                 self.shuffle()
             dealt.append(self.pile.pop(0))

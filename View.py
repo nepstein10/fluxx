@@ -1,6 +1,7 @@
-from Game import Game
 from tkinter import *
 from tkinter import ttk
+from PIL import ImageTk, Image
+from pathlib import Path
 
 
 class View(object):
@@ -17,6 +18,8 @@ class View(object):
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
 
+        path = str(Path(__file__).parent.absolute())
+        self.brules_img = ImageTk.PhotoImage(Image.open(f"{path}/cimgs/Draw 1, Play 1.jpg").resize((70, 60)))
         self.notifytext = "This is Fluxx in progress!"
 
     # These next 4 methods are the sequence of views that start the game.
@@ -73,15 +76,15 @@ class View(object):
     #   g: Game
     def game_board(self, g):
         self.clear_frame(self.frame)
-        self.frame.master.geometry(f"{len(g.players)*200}x200")
+        self.frame.master.geometry(f"{len(g.players)*200 + 100}x400")
         bs = ttk.Style()
-        bs.configure('Bordered.TFrame', background="black")
+        bs.configure('Bordered.TFrame', background="black", height=100)
         # The player frame, with an inner frame for each player
         #  displaying name, hand size, and keepers
         pframe = ttk.Frame(self.frame, padding="3 12")
         pframe.grid(column=0, row=0, sticky=N)
         for i in range(len(g.players)):
-            iframe = ttk.Frame(pframe, padding=3,
+            iframe = ttk.Frame(pframe, height=100, padding=3,
                                borderwidth=1, relief="sunken",
                                style='Bordered.TFrame')
             iframe.grid(column=i, row=0)
@@ -94,35 +97,37 @@ class View(object):
             hlbl.grid(column=0, row=1)
             # representation of each keeper
             for j in range(len(p.keepers)):
-                klbl = ttk.Label(iframe, text=p.keepers[j])
+                klbl = ttk.Label(iframe, image=p.keepers[j].img)
                 klbl.grid(column=j+1, row=1)
         # The rules frame, with a representation of each rule card
-        rframe = ttk.Frame(self.frame, padding="3 12",
+        rframe = ttk.Frame(self.frame, height=100, padding=3,
                            borderwidth=1, relief="sunken",
                            style='Bordered.TFrame')
-        rframe.grid(column=0, row=1)
+        rframe.grid(column=0, row=1, sticky=W)
         rlabel = ttk.Label(rframe, text="Rules:")
         rlabel.grid(column=0, row=0, sticky=W)
-        brules = ttk.Label(rframe, text="D1/P1")
+        brules = ttk.Label(rframe, image=self.brules_img)
         brules.grid(column=0, row=1, sticky=W)
         for i in range(len(g.ruleManager.rules)):
-            rlbl = ttk.Label(rframe, text=g.ruleManager.rules[i])
+            rlbl = ttk.Label(rframe, image=g.ruleManager.rules[i].img)
             rlbl.grid(column=i+1,row=1)
         # The goal(s), below the rules on the left
-        gframe = ttk.Frame(self.frame, padding="3 12",
+        gframe = ttk.Frame(self.frame, padding="3",
                            borderwidth=1, relief="sunken",
                            style='Bordered.TFrame')
-        gframe.grid(column=0, row=2)
+        gframe.grid(column=0, row=2, sticky=W)
         glabel = ttk.Label(gframe, text="Goal(s):")
         glabel.grid(column=0, row=0, sticky=W)
         for i in range(len(g.goals)):
-            glbl = ttk.Label(gframe, text=g.goals[i])
+            glbl = ttk.Label(gframe, image=g.goals[i].img)
             glbl.grid(column=i+1, row=0)
         notify = ttk.Label(self.frame, text=self.notifytext)
-        notify.grid(column=0, row=10, columnspan=3)
+        notify.grid(column=0, row=8, columnspan=3)
         if g.winner:
             ngb = ttk.Button(self.frame, text="New Game?", command=self.new_game)
-            ngb.grid(column=4, row=10)
+            ngb.grid(column=3, row=10)
+            qbutton = ttk.Button(self.frame, text="Quit", command=self.root.destroy)
+            qbutton.grid(column=4, row=10)
 
     # Select a card from the list passed in and return it
     #   li: a list of Card objects to pick from
@@ -143,8 +148,9 @@ class View(object):
         lbl.grid(column=0, row=0, columnspan=len(li))
         for i in range(len(li)):
             b = ttk.Button(fr, text=li[i], command=lambda i=i: self.ret_card(p, li.pop(i), window, fn))
+            b['image'] = li[i].img
             b.grid(column=i, row=1)
-        window.geometry(f"{len(li)*150}x50+300+250")
+        window.geometry(f"{max(len(li)*150, 400)}x50+500+250")
         window.mainloop()
         print("done pick_card")
 

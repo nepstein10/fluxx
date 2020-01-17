@@ -67,6 +67,7 @@ class Fluxx(Game):
     def start_turn(self, player):
         self.view.notifytext = f"{player}'s turn"
         # draw correct number of cards, add them to hand
+        #   KNOWN BUG: No limits check before drawing. Can result in empty deck
         drawn = self.ruleManager.draws
         for c in self.deck.deal(drawn):
             player.hand.append(c)
@@ -75,17 +76,6 @@ class Fluxx(Game):
         # run correct number of plays
         self.ptt = 0
         self.run_play(player)
-        # tot_plays = self.ruleManager.get_plays()
-        # while played <= tot_plays and len(player.hand) > 0:
-        #     # Player selects a card from the popup hand
-        #     self.play(player)
-        #     # this draws up to new draw rule and complies players w/ rules
-        #     drawn = self.ruleManager.check_compliance(self, player, drawn)
-        #     if self.check_win(): break
-        #     self.view.game_board(self.players, self.goals, self.ruleManager)
-        #     played += 1
-        #     tot_plays = self.ruleManager.get_plays()
-        # self.turn += 1
 
     def run_play(self, player):
         self.ruleManager.ap = player
