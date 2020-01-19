@@ -20,13 +20,15 @@ class Rules(object):
     def get_plays(self):
         return self.plays
 
+
     # rules: int list (the rules to update to, with None if no change)
     def update_rules(self, rules):
         options = [self.draws, self.plays, self.handlim, self.keeplim]
         for r in range(len(rules)):
             # update any rules that need updating
             if not rules[r] is None:
-                options[r] = rules[r]
+                if rules[r] >= 0: options[r] = rules[r]
+                else: options[r] = None
                 print ("rule {r} updated")
         self.draws = options[0]
         self.plays = options[1]

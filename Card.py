@@ -1,12 +1,17 @@
 from PIL import ImageTk, Image
 from pathlib import Path
+from tkinter import ttk
 
 class Card(object):
     # name: string
     def __init__(self, name):
         self.name = name
         path = str(Path(__file__).parent.absolute())
-        self.img = ImageTk.PhotoImage(Image.open(f"{path}/cimgs/{self.name}.jpg").resize((70, 60)))
+        self.imglbl = ttk.Label()
+        self.img = ImageTk.PhotoImage(Image.open(f"{path}/cimgs/{self.name}.jpg").resize((70, 60)), master=self.imglbl)
+        img = ImageTk.PhotoImage(Image.open(f"{path}/cimgs/{self.name}.jpg").resize((70, 60)))
+        self.imglbl['image'] = img
+
 
     def on_play(self, player, g):
         print (f"Played {self.name}")
@@ -32,10 +37,10 @@ class Action(Card):
         super().__init__(name)
         self.action = action
 
-    # do the action - most still to implement
+    # do the action - still to implement
     def on_play(self, player, g):
         super().on_play(player, g)
-        self.action()
+        self.action(self, player, g)
         g.deck.discard.append(self)
 
 

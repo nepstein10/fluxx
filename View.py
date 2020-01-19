@@ -121,12 +121,22 @@ class View(object):
         for i in range(len(g.goals)):
             glbl = ttk.Label(gframe, image=g.goals[i].img)
             glbl.grid(column=i+1, row=0)
+        # The Deck and Discard, to the right of the goals
+        cframe = ttk.Frame(self.frame, padding=3,
+                           borderwidth=1, relief="sunken",
+                           style='Bordered.TFrame')
+        cframe.grid(column=1, row=2, sticky=W)
+        deck_label = ttk.Label(cframe, text=f"Deck:{len(self.game.deck.pile)}")
+        discard_label = ttk.Label(cframe, text=f"Discard: {len(self.game.deck.discard)}")
+        deck_label.grid(column=0, row=0)
+        discard_label.grid(column=0, row=1)
+        # The game status, and at the end "New Game" and "Quit" buttons
         notify = ttk.Label(self.frame, text=self.notifytext)
         notify.grid(column=0, row=8, columnspan=3)
         if g.winner:
             ngb = ttk.Button(self.frame, text="New Game?", command=self.new_game)
             ngb.grid(column=3, row=10)
-            qbutton = ttk.Button(self.frame, text="Quit", command=self.root.destroy)
+            qbutton = ttk.Button(self.frame, text="Quit", command=self.root.quit())
             qbutton.grid(column=4, row=10)
 
     # Select a card from the list passed in and return it
@@ -147,12 +157,16 @@ class View(object):
         lbl = ttk.Label(fr, text=f"{p}, {st}")
         lbl.grid(column=0, row=0, columnspan=len(li))
         for i in range(len(li)):
-            b = ttk.Button(fr, text=li[i], command=lambda i=i: self.ret_card(p, li.pop(i), window, fn))
-            b['image'] = li[i].img
+            b = ttk.Button(fr, command=lambda i=i: self.ret_card(p, li.pop(i), window, fn))
+            try:
+                l = li[i].imglbl
+                l['master'] = b
+                l.grid()
+            except TclError:
+                b['text'] = li[i]
             b.grid(column=i, row=1)
         window.geometry(f"{max(len(li)*150, 400)}x50+500+250")
         window.mainloop()
-        print("done pick_card")
 
     # Close the window and pass the card to fn
     #   p (Player): the Player choosing the card

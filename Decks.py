@@ -1,4 +1,5 @@
 from Card import *
+from Actions import *
 from random import shuffle
 
 class Deck(object):
@@ -30,7 +31,8 @@ class SampleFluxxDeck(Deck):
     def __init__(self):
         super().__init__()
         # list of actions -- maybe try to put this in a different file
-        actions = [lambda: print("RR not implemented")]
+        actions = [lambda c, p, g: rules_reset(c, p, g)
+                   ]
         # list of cards -- also relocate to clean if possible
         cards = [NRule("Draw 2", [2, None, None, None]),
                  NRule("Draw 3", [3, None, None, None]),
