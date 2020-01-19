@@ -53,3 +53,30 @@ class SampleFluxxDeck(Deck):
                  Goal("Night and Day", [[3, 4]])]
         # set the pile to the cards, create an empty discard pile
         self.pile = cards
+
+class Fluxx3_1Deck(Deck):
+    def __init__(self):
+        super().__init__()
+        # list of actions -- maybe try to put this in a different file
+        actions = [lambda c, p, g: rules_reset(c, p, g),
+                   ]
+        # list of cards -- also relocate to clean if possible
+        cards = [NRule("Draw 2", [2, None, None, None]),
+                 NRule("Draw 3", [3, None, None, None]),
+                 NRule("Play 2", [None, 2, None, None]),
+                 NRule("Play 3", [None, 3, None, None]),
+                 NRule("Play 4", [None, 4, None, None]),
+                 NRule("Hand Limit 1", [None, None, 1, None]),
+                 NRule("Keeper Limit 2", [None, None, None, 2]),
+                 Action("Rules Reset", actions[0]),
+                 Keeper("Chocolate", 0),
+                 Keeper("Cookies", 1),
+                 Keeper("Milk", 2),
+                 Keeper("The Sun", 3),
+                 Keeper("The Moon", 4),
+                 Goal("Milk and Cookies", [[1, 2]]),
+                 Goal("Chocolate Milk", [[0, 2]]),
+                 Goal("Squishy Chocolate", [[0, 3]]),
+                 Goal("Night and Day", [[3, 4]])]
+        # set the pile to the cards, create an empty discard pile
+        self.pile = cards
