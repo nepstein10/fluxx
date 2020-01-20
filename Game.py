@@ -118,17 +118,17 @@ class Fluxx(Game):
         return False
 
 
-class Fluxx3_1(Fluxx):
+class Fluxx3_0(Fluxx):
     def __init__(self):
         super().__init__()
         self.maxPlayers = 5
 
     def setup(self):
-        self.deck = Deck()
+        self.deck = Fluxx3_0Deck()
         super().setup()
 
     def __repr__(self):
-        return "Fluxx 3.1"
+        return "Fluxx 3.0"
 
 class FluxxSample(Fluxx):
     def __init__(self):

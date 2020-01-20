@@ -27,7 +27,7 @@ def main():
 class GM(object):
     def __init__(self):
         # NEED TO UPDATE THIS WITH ALL GAME OPTIONS
-        game_opts = [FluxxSample(), Fluxx3_1()]
+        game_opts = [FluxxSample(), Fluxx3_0()]
         self.v = View(game_opts)
         self.game_select(self.v)
 
